@@ -34,10 +34,9 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
 
 // ***** Variables
   int _selectedIndex = 0;
-  int _seconds1 = 5500;  // in Hundertstel
-  double _time1 = 55.0;
-  int _seconds2 = 5500;  // in Hundertstel
-  double _time2 = 55.0;
+  int _seconds1 = (3*3600 + 15*60 + 12)*100;  // in Hundertstel
+  int _seconds2 = (3*3600 + 15*60 + 12)*100;  // in Hundertstel
+
   bool _isButton1Disabled = false;
   bool _isButton2Disabled = true;
 
@@ -62,15 +61,33 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
       setState(() {
         if (_seconds1 > 0) {
           _seconds1--;
-          _time1 = _seconds1/10;
-          _time1 = _time1.floorToDouble();
-          _time1 = _time1/10;
         } else {
           _isRunning1 = false;
           _timer1?.cancel();
             }
       });
     });
+  }
+
+  String show_time(int n) {
+    if (n < 6000 ){
+      n = n ~/10;
+      return (n/10).toStringAsFixed(1);
+    }
+    else if (n < 360000) {
+      n = n ~/100;
+      int _minutes = n ~/ 60;
+      int _seconds = n - (_minutes * 60);
+      return "${_minutes.toString().padLeft(2, '0')}:${_seconds.toString().padLeft(2, '0')}";
+
+    }
+    else {
+      n = n ~/100;
+      int _hours = n ~/ 3600;
+      int _minutes = (n - _hours * 3600) ~/ 60;
+      int _seconds = n - _hours * 3600 - _minutes*60;
+      return "${_hours.toString().padLeft(2, '0')}:${_minutes.toString().padLeft(2, '0')}:${_seconds.toString().padLeft(2, '0')}";
+    }
   }
 
   void _startTimer2() {
@@ -81,9 +98,6 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
       setState(() {
         if (_seconds2 > 0) {
           _seconds2--;
-          _time2 = _seconds2/10;
-          _time2 = _time2.floorToDouble();
-          _time2 = _time2/10;
         } else {
           _isRunning2 = false;
           _timer2?.cancel();
@@ -198,20 +212,38 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            _time1.toString().padLeft(2, '0'),
+                            show_time(_seconds1).padLeft(2, '0'),
                             style: const TextStyle(
-                                fontSize: 24,
+                                fontSize: 100,
                                 color: Colors.white, ),
                           ),
                           Text(
-                            _time2.toString().padLeft(2, '0'),
+                            show_time(_seconds2).padLeft(2, '0'),
                             style: const TextStyle(
-                                fontSize: 24,
+                                fontSize: 100,
                                 color: Colors.white),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 70),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                       children: [
+                        ElevatedButton(
+                           onPressed: () {
+                               _pauseTimer2();
+                               _pauseTimer1();
+                           },
+                           style: ElevatedButton.styleFrom(
+                             backgroundColor: Colors.green,
+                             padding: const EdgeInsets.fromLTRB(80, 30, 80, 30),
+                           ),
+                           child: const Text(
+                             'Pause',
+                             style: TextStyle(fontSize: 30),
+                          ),
+                        ),
+                      ],
+                      ),
                     ],
                   ),
                 ),
