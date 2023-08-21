@@ -1,37 +1,117 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+
 void main() {
-  runApp(VerticalTabsNavigationApp());
+  runApp(const ChessClockApp());
 }
 
-class VerticalTabsNavigationApp extends StatelessWidget {
+class ChessClockApp extends StatelessWidget {
+  const ChessClockApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.black,
       ),
-      home: VerticalTabsNavigationScreen(),
+      home: const ChessClockScreen(),
     );
   }
 }
 
-class VerticalTabsNavigationScreen extends StatefulWidget {
+class ChessClockScreen extends StatefulWidget {
+  const ChessClockScreen({super.key});
+
   @override
-  _VerticalTabsNavigationScreenState createState() =>
-      _VerticalTabsNavigationScreenState();
+  _ChessClockScreenState createState() =>
+      _ChessClockScreenState();
 }
 
-class _VerticalTabsNavigationScreenState
-    extends State<VerticalTabsNavigationScreen> {
+// ********** State ***********************
+
+class _ChessClockScreenState extends State<ChessClockScreen> {
+
+// ***** Variables
   int _selectedIndex = 0;
+  int _seconds1 = 5500;  // in Hundertstel
+  double _time1 = 55.0;
+  int _seconds2 = 5500;  // in Hundertstel
+  double _time2 = 55.0;
+  bool _isButton1Disabled = false;
+  bool _isButton2Disabled = true;
+
+  // The state of the timer (running or not)
+  bool _isRunning1 = false;
+  bool _isRunning2 = false;
+
+// **** Timer
+  // The timers
+  Timer? _timer1;
+  Timer? _timer2;
+
+  // Start the timers
+  // The timer will run every hundreth of a second
+  // The timer will stop when the seconds are 0
+
+  void _startTimer1() {
+    setState(() {
+      _isRunning1 = true;
+    });
+    _timer1 = Timer.periodic(const Duration(milliseconds: 10), (timer) {
+      setState(() {
+        if (_seconds1 > 0) {
+          _seconds1--;
+          _time1 = _seconds1/10;
+          _time1 = _time1.floorToDouble();
+          _time1 = _time1/10;
+        } else {
+          _isRunning1 = false;
+          _timer1?.cancel();
+            }
+      });
+    });
+  }
+
+  void _startTimer2() {
+    setState(() {
+      _isRunning2 = true;
+    });
+    _timer2 = Timer.periodic(const Duration(milliseconds: 10), (timer) {
+      setState(() {
+        if (_seconds2 > 0) {
+          _seconds2--;
+          _time2 = _seconds2/10;
+          _time2 = _time2.floorToDouble();
+          _time2 = _time2/10;
+        } else {
+          _isRunning2 = false;
+          _timer2?.cancel();
+        }
+      });
+    });
+  }
+
+  // Pause the timers
+  void _pauseTimer1() {
+    setState(() {
+      _isRunning1 = false;
+    });
+    _timer1?.cancel();
+  }
+
+  void _pauseTimer2() {
+    setState(() {
+      _isRunning2 = false;
+    });
+    _timer2?.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Vertical Tabs Navigation Example'),
+        title: const Text('Chess Clock V 0.0.1'),
         backgroundColor: Colors.black,
       ),
       body: Row(
@@ -41,13 +121,13 @@ class _VerticalTabsNavigationScreenState
             child: NavigationRail(
               selectedIndex: _selectedIndex,
               backgroundColor: Colors.black,
-              unselectedIconTheme: IconThemeData(color: Colors.grey),
+              unselectedIconTheme: const IconThemeData(color: Colors.grey),
               onDestinationSelected: (int index) {
                 setState(() {
                   _selectedIndex = index;
                 });
               },
-              destinations: [
+              destinations: const [
                 NavigationRailDestination(
                   icon: Icon(Icons.home),
                   selectedIcon: Icon(Icons.home, color: Colors.white),
@@ -61,7 +141,7 @@ class _VerticalTabsNavigationScreenState
               ],
             ),
           ),
-          VerticalDivider(thickness: 1, width: 1),
+          const VerticalDivider(thickness: 1, width: 1),
           Expanded(
             child: IndexedStack(
               index: _selectedIndex,
@@ -72,51 +152,72 @@ class _VerticalTabsNavigationScreenState
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+// *********  Buttons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ElevatedButton(
-                            onPressed: () {},
-                            child: Text(
+                            onPressed: () {
+                              if (! _isButton1Disabled) {
+                                _startTimer2();
+                                _pauseTimer1();
+                                _isButton2Disabled = ! _isButton2Disabled;
+                                _isButton1Disabled = ! _isButton1Disabled;
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.fromLTRB(80, 30, 80, 30),
+                            ),
+                            child: const Text(
                               'Spieler rechts',
                               style: TextStyle(fontSize: 30),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.fromLTRB(80, 30, 80, 30),
                             ),
                           ),
                           // SizedBox(width: 150),
                           ElevatedButton(
-                            onPressed: () {},
-                            child: Text(
+                            onPressed: () {
+                              if (! _isButton2Disabled) {
+                                _startTimer1();
+                                _pauseTimer2();
+                                _isButton1Disabled = ! _isButton1Disabled;
+                                _isButton2Disabled = ! _isButton2Disabled;
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.fromLTRB(80, 30, 80, 30),
+                            ),
+                            child: const Text(
                               'Spieler links',
                               style: TextStyle(fontSize: 30),
                             ),
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.fromLTRB(80, 30, 80, 30),
-                            ),
                           ),
                         ],
                       ),
+// ************** Timers
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          TimerWidget(
-                            duration: Duration(hours: 1, minutes: 30),
+                          Text(
+                            _time1.toString().padLeft(2, '0'),
+                            style: const TextStyle(
+                                fontSize: 24,
+                                color: Colors.white, ),
                           ),
-                          //SizedBox(width: 90), // Erhöhe den horizontalen Abstand
-                          TimerWidget(
-                            duration: Duration(hours: 1, minutes: 30),
+                          Text(
+                            _time2.toString().padLeft(2, '0'),
+                            style: const TextStyle(
+                                fontSize: 24,
+                                color: Colors.white),
                           ),
                         ],
                       ),
-                      SizedBox(height: 70),
+                      const SizedBox(height: 70),
                     ],
                   ),
                 ),
                 Container(
                   color: Colors.black,
-                  child: Center(
+                  child: const Center(
                       child: Text('Inhalt Tab 2',
                           style: TextStyle(color: Colors.white))),
                 ),
@@ -129,51 +230,3 @@ class _VerticalTabsNavigationScreenState
   }
 }
 
-class TimerWidget extends StatefulWidget {
-  final Duration duration;
-
-  TimerWidget({required this.duration});
-
-  @override
-  _TimerWidgetState createState() => _TimerWidgetState();
-}
-
-class _TimerWidgetState extends State<TimerWidget> {
-  late Timer _timer;
-  Duration _currentTime = Duration();
-
-  @override
-  void initState() {
-    super.initState();
-    _currentTime = widget.duration;
-    _timer = Timer.periodic(Duration(seconds: 1), _updateTime);
-  }
-
-  void _updateTime(Timer timer) {
-    if (_currentTime.inSeconds > 0) {
-      setState(() {
-        _currentTime -= Duration(seconds: 1);
-      });
-    } else {
-      _timer.cancel();
-    }
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          '${_currentTime.inHours.toString().padLeft(2, '0')}:${(_currentTime.inMinutes % 60).toString().padLeft(2, '0')}:${(_currentTime.inSeconds % 60).toString().padLeft(2, '0')}',
-          style: TextStyle(color: Colors.white, fontSize: 80),
-        ),
-      ],
-    );
-  }
-}
