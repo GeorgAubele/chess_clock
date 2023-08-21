@@ -41,8 +41,33 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
   bool _isButton2Disabled = true;
 
   // The state of the timer (running or not)
-  bool _isRunning1 = false;
-  bool _isRunning2 = false;
+  // bool _isRunning1 = false;
+  // bool _isRunning2 = false;
+
+// Time formatting
+  String show_time(int n) {
+    if (n < 6000 ){
+      n = n ~/10;
+      return (n/10).toStringAsFixed(1);
+    }
+    else if (n < 360000) {
+      n = n ~/100;
+      int minutes = n ~/ 60;
+      int seconds = n - (minutes * 60);
+      return "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
+
+    }
+    else {
+      n = n ~/100;
+      int hours = n ~/ 3600;
+      int minutes = (n - hours * 3600) ~/ 60;
+      int seconds = n - hours * 3600 - minutes*60;
+      return "${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
+    }
+  }
+
+
+
 
 // **** Timer
   // The timers
@@ -55,51 +80,31 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
 
   void _startTimer1() {
     setState(() {
-      _isRunning1 = true;
+      // _isRunning1 = true;
     });
     _timer1 = Timer.periodic(const Duration(milliseconds: 10), (timer) {
       setState(() {
         if (_seconds1 > 0) {
           _seconds1--;
         } else {
-          _isRunning1 = false;
+          // _isRunning1 = false;
           _timer1?.cancel();
             }
       });
     });
   }
 
-  String show_time(int n) {
-    if (n < 6000 ){
-      n = n ~/10;
-      return (n/10).toStringAsFixed(1);
-    }
-    else if (n < 360000) {
-      n = n ~/100;
-      int _minutes = n ~/ 60;
-      int _seconds = n - (_minutes * 60);
-      return "${_minutes.toString().padLeft(2, '0')}:${_seconds.toString().padLeft(2, '0')}";
-
-    }
-    else {
-      n = n ~/100;
-      int _hours = n ~/ 3600;
-      int _minutes = (n - _hours * 3600) ~/ 60;
-      int _seconds = n - _hours * 3600 - _minutes*60;
-      return "${_hours.toString().padLeft(2, '0')}:${_minutes.toString().padLeft(2, '0')}:${_seconds.toString().padLeft(2, '0')}";
-    }
-  }
 
   void _startTimer2() {
     setState(() {
-      _isRunning2 = true;
+      // _isRunning2 = true;
     });
     _timer2 = Timer.periodic(const Duration(milliseconds: 10), (timer) {
       setState(() {
         if (_seconds2 > 0) {
           _seconds2--;
         } else {
-          _isRunning2 = false;
+          // _isRunning2 = false;
           _timer2?.cancel();
         }
       });
@@ -109,14 +114,14 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
   // Pause the timers
   void _pauseTimer1() {
     setState(() {
-      _isRunning1 = false;
+      // _isRunning1 = false;
     });
     _timer1?.cancel();
   }
 
   void _pauseTimer2() {
     setState(() {
-      _isRunning2 = false;
+      // _isRunning2 = false;
     });
     _timer2?.cancel();
   }
