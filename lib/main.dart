@@ -37,15 +37,17 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
   int _seconds1 = (3*3600 + 15*60 + 12)*100;  // in Hundertstel
   int _seconds2 = (3*3600 + 15*60 + 12)*100;  // in Hundertstel
 
-  bool _isButton1Disabled = false;
-  bool _isButton2Disabled = true;
+  bool _isButton1Disabled = true;
+  bool _isButton2Disabled = false;
+
+  int tapped = 0;
 
   // The state of the timer (running or not)
   // bool _isRunning1 = false;
   // bool _isRunning2 = false;
 
 // Time formatting
-  String show_time(int n) {
+  String showTime(int n) {
     if (n < 6000 ){
       n = n ~/10;
       return (n/10).toStringAsFixed(1);
@@ -182,10 +184,14 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                                 _pauseTimer1();
                                 _isButton2Disabled = ! _isButton2Disabled;
                                 _isButton1Disabled = ! _isButton1Disabled;
+                                setState(() {tapped = 1;});
+                                print(tapped);
                               }
+                              else {null;}
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.fromLTRB(80, 30, 80, 30),
+                              backgroundColor: tapped == 1 ? Colors.grey : Colors.blue,
                             ),
                             child: const Text(
                               'Spieler rechts',
@@ -200,10 +206,13 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                                 _pauseTimer2();
                                 _isButton1Disabled = ! _isButton1Disabled;
                                 _isButton2Disabled = ! _isButton2Disabled;
+                                setState(() {tapped = 2;});
+                                print(tapped);
                               }
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.fromLTRB(80, 30, 80, 30),
+                              backgroundColor: tapped == 2 ? Colors.grey : Colors.blue,
                             ),
                             child: const Text(
                               'Spieler links',
@@ -217,13 +226,13 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            show_time(_seconds1).padLeft(2, '0'),
+                            showTime(_seconds1).padLeft(2, '0'),
                             style: const TextStyle(
                                 fontSize: 100,
                                 color: Colors.white, ),
                           ),
                           Text(
-                            show_time(_seconds2).padLeft(2, '0'),
+                            showTime(_seconds2).padLeft(2, '0'),
                             style: const TextStyle(
                                 fontSize: 100,
                                 color: Colors.white),
@@ -237,6 +246,10 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                            onPressed: () {
                                _pauseTimer2();
                                _pauseTimer1();
+                               setState(() {
+                                 tapped = 0;
+
+                               });
                            },
                            style: ElevatedButton.styleFrom(
                              backgroundColor: Colors.green,
