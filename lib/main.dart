@@ -186,14 +186,13 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                                 _isButton2Disabled = ! _isButton2Disabled;
                                 _isButton1Disabled = ! _isButton1Disabled;
                                 setState(() {tapped = 1;});
-                                print(tapped);
                               }
                               else {null;}
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.fromLTRB(120, 30, 120, 30),
                               backgroundColor: tapped == 1 ? Colors.grey : Colors.blue,
-                              minimumSize: Size(420,100),
+                              minimumSize: const Size(420,100),
                             ),
 
                             child: const Text(
@@ -210,13 +209,12 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                                 _isButton1Disabled = ! _isButton1Disabled;
                                 _isButton2Disabled = ! _isButton2Disabled;
                                 setState(() {tapped = 2;});
-                                print(tapped);
                               }
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.fromLTRB(120, 30, 120, 30),
                               backgroundColor: tapped == 2 ? Colors.grey : Colors.blue,
-                              minimumSize: Size(420,100),
+                              minimumSize: const Size(420,100),
                             ),
                             child: const Text(
                               'Spieler links',
