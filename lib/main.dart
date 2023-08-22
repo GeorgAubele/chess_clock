@@ -34,13 +34,13 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
 
 // ***** Variables
   int _selectedIndex = 0;
-  int _seconds1 = (3*3600 + 15*60 + 12)*100;  // in Hundertstel
+  int _seconds1 = (0*3600 + 1*60 + 12)*100;  // in Hundertstel
   int _seconds2 = (3*3600 + 15*60 + 12)*100;  // in Hundertstel
 
   bool _isButton1Disabled = true;
   bool _isButton2Disabled = false;
 
-  int tapped = 0;
+  int tapped = 1;
 
   // The state of the timer (running or not)
   // bool _isRunning1 = false;
@@ -177,6 +177,7 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+
                           ElevatedButton(
                             onPressed: () {
                               if (! _isButton1Disabled) {
@@ -190,9 +191,11 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                               else {null;}
                             },
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.fromLTRB(80, 30, 80, 30),
+                              padding: const EdgeInsets.fromLTRB(120, 30, 120, 30),
                               backgroundColor: tapped == 1 ? Colors.grey : Colors.blue,
+                              minimumSize: Size(420,100),
                             ),
+
                             child: const Text(
                               'Spieler rechts',
                               style: TextStyle(fontSize: 30),
@@ -211,8 +214,9 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.fromLTRB(80, 30, 80, 30),
+                              padding: const EdgeInsets.fromLTRB(120, 30, 120, 30),
                               backgroundColor: tapped == 2 ? Colors.grey : Colors.blue,
+                              minimumSize: Size(420,100),
                             ),
                             child: const Text(
                               'Spieler links',
@@ -225,18 +229,46 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            showTime(_seconds1).padLeft(2, '0'),
-                            style: const TextStyle(
-                                fontSize: 100,
-                                color: Colors.white, ),
+                          Container(
+                            alignment: Alignment.center,
+                            height: 120,
+                            width: 420,
+                              decoration: BoxDecoration(
+                                color: _seconds1 == 0 ? Colors.red :  Colors.black ,
+                                // Red border with the width is equal to 5
+                                //border: Border.all(
+                                    //width: 2,
+                                    //color: Colors.blue
+                                // ),
+                                ),
+                            child:
+                              Text(
+                                showTime(_seconds1).padLeft(2, '0'),
+                                style: const TextStyle(
+                                    fontSize: 100,
+                                    color: Colors.white, ),
+                              )
                           ),
-                          Text(
-                            showTime(_seconds2).padLeft(2, '0'),
-                            style: const TextStyle(
-                                fontSize: 100,
-                                color: Colors.white),
-                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            height: 120,
+                            width: 420,
+                            decoration: BoxDecoration(
+                                color: _seconds2 == 0 ? Colors.red :  Colors.black ,
+                                // Red border with the width is equal to 5
+                                // border: Border.all(
+                                    // width: 2,
+                                    // color: Colors.blue
+                                //),
+                            ),
+                            child:
+                              Text(
+                                showTime(_seconds2).padLeft(2, '0'),
+                                style: const TextStyle(
+                                    fontSize: 100,
+                                    color: Colors.white),
+                              ),
+                          )
                         ],
                       ),
                       Row(
