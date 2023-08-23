@@ -297,27 +297,32 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                     ],
                   ),
                 ),
+// Settings Tab
                 Container(
                   color: Colors.black,
                   child: Column (
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+// 1st. Row: Seitenwahl
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              SizedBox(width: 30,),
                               Text('Seitenwahl:',
                                   style: TextStyle(
                                       color: Colors.white,
                                     fontSize: 30
                                   )
                               ),
+                              SizedBox(width: 30,),
                               Image.asset(
-                                'assets/images/King_black.png',
+                                'assets/images/King_black_1.png',
                                 width: 80,
                                 height: 80,
                               ),
+                              SizedBox(width: 30,),
                               Switch(
                                 // thumb color (round icon)
                                 activeColor: Colors.blue,
@@ -330,15 +335,44 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                                 // changes the state of the switch
                                 onChanged: (value) => setState(() => _white_is_right = value),
                               ),
+                              SizedBox(width: 30,),
                               Image.asset(
                                 'assets/images/King_white.png',
                                 width: 80,
                                 height: 80,
                               ),
                               ]
-                        )
-
-
+                        ),
+// Zweite Zeile: Erste Zeitauswahl
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(width: 30,),
+                            Text('Zeitwahl 1:',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 30
+                                )
+                            ),
+                            SizedBox(width: 30,),
+                          ],
+                        ),
+// Dritte Zeile: Zweite Zeitauswahl
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(width: 30,),
+                            Text('Zeitwahl 2:',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 30
+                                )
+                            ),
+                            SizedBox(width: 30,),
+                          ],
+                        ),
                       ]
                   )
 
