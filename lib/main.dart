@@ -313,6 +313,11 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                                     fontSize: 30
                                   )
                               ),
+                              Image.asset(
+                                'assets/images/King_black.png',
+                                width: 80,
+                                height: 80,
+                              ),
                               Switch(
                                 // thumb color (round icon)
                                 activeColor: Colors.blue,
@@ -324,6 +329,11 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                                 value: _white_is_right,
                                 // changes the state of the switch
                                 onChanged: (value) => setState(() => _white_is_right = value),
+                              ),
+                              Image.asset(
+                                'assets/images/King_white.png',
+                                width: 80,
+                                height: 80,
                               ),
                               ]
                         )
