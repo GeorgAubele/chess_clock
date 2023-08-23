@@ -37,6 +37,8 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
   int _seconds1 = (0*3600 + 1*60 + 12)*100;  // in Hundertstel
   int _seconds2 = (3*3600 + 15*60 + 12)*100;  // in Hundertstel
 
+  bool _white_is_right = true;
+
   bool _isButton1Disabled = true;
   bool _isButton2Disabled = false;
 
@@ -297,9 +299,40 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                 ),
                 Container(
                   color: Colors.black,
-                  child: const Center(
-                      child: Text('Inhalt Tab 2',
-                          style: TextStyle(color: Colors.white))),
+                  child: Column (
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text('Seitenwahl:',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                    fontSize: 30
+                                  )
+                              ),
+                              Switch(
+                                // thumb color (round icon)
+                                activeColor: Colors.blue,
+                                activeTrackColor: Colors.white,
+                                inactiveThumbColor: Colors.blue,
+                                inactiveTrackColor: Colors.white,
+                                splashRadius: 50.0,
+                                // boolean variable value
+                                value: _white_is_right,
+                                // changes the state of the switch
+                                onChanged: (value) => setState(() => _white_is_right = value),
+                              ),
+                              ]
+                        )
+
+
+                      ]
+                  )
+
+                  ,
                 ),
               ],
             ),
