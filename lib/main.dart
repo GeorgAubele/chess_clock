@@ -39,10 +39,10 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
 
   bool _white_is_right = true;
 
-  bool _isButton1Disabled = true;
-  bool _isButton2Disabled = false;
+  bool _isButton1Disabled = false;
+  bool _isButton2Disabled = true;
 
-  int tapped = 1;
+  int _tapped = 1;
 
   // The state of the timer (running or not)
   // bool _isRunning1 = false;
@@ -187,13 +187,13 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                                 _pauseTimer1();
                                 _isButton2Disabled = ! _isButton2Disabled;
                                 _isButton1Disabled = ! _isButton1Disabled;
-                                setState(() {tapped = 1;});
+                                setState(() {_tapped = 1;});
                               }
                               else {null;}
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.fromLTRB(120, 30, 120, 30),
-                              backgroundColor: tapped == 1 ? Colors.grey : Colors.blue,
+                              backgroundColor: _tapped == 1 ? Colors.grey : Colors.blue,
                               minimumSize: const Size(420,100),
                             ),
 
@@ -210,12 +210,12 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                                 _pauseTimer2();
                                 _isButton1Disabled = ! _isButton1Disabled;
                                 _isButton2Disabled = ! _isButton2Disabled;
-                                setState(() {tapped = 2;});
+                                setState(() {_tapped = 2;});
                               }
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.fromLTRB(120, 30, 120, 30),
-                              backgroundColor: tapped == 2 ? Colors.grey : Colors.blue,
+                              backgroundColor: _tapped == 2 ? Colors.grey : Colors.blue,
                               minimumSize: const Size(420,100),
                             ),
                             child: const Text(
@@ -279,7 +279,7 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                                _pauseTimer2();
                                _pauseTimer1();
                                setState(() {
-                                 tapped = 0;
+                                 _tapped = 0;
 
                                });
                            },
@@ -317,11 +317,21 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                                   )
                               ),
                               SizedBox(width: 30,),
-                              Image.asset(
-                                'assets/images/King_black_1.png',
-                                width: 80,
-                                height: 80,
+
+                              Container(
+                                child: _white_is_right?
+                                Image.asset(
+                                  'assets/images/King_black_1.png',
+                                  width: 80,
+                                  height: 80,
+                                ) :
+                                Image.asset(
+                                  'assets/images/King_white.png',
+                                  width: 80,
+                                  height: 80,
+                                )
                               ),
+
                               SizedBox(width: 30,),
                               Switch(
                                 // thumb color (round icon)
@@ -336,10 +346,18 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
                                 onChanged: (value) => setState(() => _white_is_right = value),
                               ),
                               SizedBox(width: 30,),
-                              Image.asset(
-                                'assets/images/King_white.png',
-                                width: 80,
-                                height: 80,
+                              Container(
+                                  child: _white_is_right?
+                                  Image.asset(
+                                    'assets/images/King_white.png',
+                                    width: 80,
+                                    height: 80,
+                                  ) :
+                                  Image.asset(
+                                    'assets/images/King_black_1.png',
+                                    width: 80,
+                                    height: 80,
+                                  )
                               ),
                               ]
                         ),
