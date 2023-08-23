@@ -162,7 +162,7 @@ class _ChessClockScreenState extends State<ChessClockScreen> {
               ],
             ),
           ),
-          const VerticalDivider(thickness: 1, width: 1),
+          const VerticalDivider(thickness: 2, width: 2, color: Colors.blue,),
           Expanded(
             child: IndexedStack(
               index: _selectedIndex,
